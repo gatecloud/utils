@@ -108,11 +108,23 @@ func (r *Request) Do() (Response, error) {
 	}
 
 	if !reflect.ValueOf(r.Object).IsValid() {
-		return Response{StatusCode: 400}, errors.New("Request Object can't be empty")
+		return Response{StatusCode: 400}, errors.New("Request Object can't be nil")
 	}
-	err = json.Unmarshal(resBody, r.Object)
-	if err != nil {
-		return Response{Status: "Request Unmarshal Error", StatusCode: 500}, err
+
+	contentType := resp.Header.Get("Content-Type")
+	if strings.Contains(contentType, "image") {
+		obj, ok := r.Object.(*[]byte)
+		if !ok {
+			return Response{Status: "Request Assert Error", StatusCode: 500}, err
+		}
+		*obj = resBody
+		r.Object = obj
+
+	} else {
+		err = json.Unmarshal(resBody, r.Object)
+		if err != nil {
+			return Response{Status: "Request Unmarshal Error", StatusCode: 500}, err
+		}
 	}
 	return response, nil
 }
