@@ -123,6 +123,9 @@ func (r *Request) Do() (Response, error) {
 	} else {
 		err = json.Unmarshal(resBody, r.Object)
 		if err != nil {
+			if _, ok := r.Object.(*[]byte); ok {
+				return Response{Status: "Request Unmarshal Error", StatusCode: 500}, errors.New(string(resBody))
+			}
 			return Response{Status: "Request Unmarshal Error", StatusCode: 500}, err
 		}
 	}
