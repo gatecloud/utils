@@ -61,9 +61,9 @@ func GetURLPath(original string) (string, error) {
 	return strings.Join(tmp, "-"), nil
 }
 
-//GetRandomString generates rendom string
+//GetRandomString generates random string
 func GetRandomString(n int) string {
-	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	const (
 		letterIdxBits = 6
 		letterIdxMask = 1<<letterIdxBits - 1
